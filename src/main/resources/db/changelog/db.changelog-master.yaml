@@ -1,0 +1,341 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20200331-1-vno
+      author: vnorobio
+      changes:
+        - createTable:
+            tableName: zone
+            columns:
+              - column:
+                  name: zone_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: zone
+  - changeSet:
+      id: 20200331-2-vno
+      author: vnorobio
+      changes:
+        - addUniqueConstraint:
+            columnNames: description
+            constraintName: uc_zone_desc
+            tableName: zone
+  - changeSet:
+      id: 20200331-3-vno
+      author: vnorobio
+      changes:
+        - createTable:
+            tableName: clinic_type
+            columns:
+              - column:
+                  name: clinic_type_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: clinic_type
+  - changeSet:
+      id: 20200331-4-vno
+      author: vnorobio
+      changes:
+        - addUniqueConstraint:
+            columnNames: description
+            constraintName: uc_clinic_type_desc
+            tableName: clinic_type
+  - changeSet:
+      id: 20200331-5-vno
+      author: vnorobio
+      changes:
+        - createTable:
+            tableName: nephrologist_type
+            columns:
+              - column:
+                  name: nephro_type_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: nephrologist_type
+  - changeSet:
+      id: 20200331-6-vno
+      author: vnorobio
+      changes:
+        - addUniqueConstraint:
+            columnNames: description
+            constraintName: uc_nephro_type_desc
+            tableName: nephrologist_type
+  - changeSet:
+      id: 20200331-7-vno
+      author: vnorobio
+      changes:
+        - createTable:
+            tableName: city
+            columns:
+              - column:
+                  name: city_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: zone
+                  type: int
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: city
+  - changeSet:
+      id: 20200331-8-vno
+      author: vnorobio
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: zone
+            baseTableName: city
+            constraintName: fk_city_zone
+            referencedColumnNames: zone_id
+            referencedTableName: zone
+  - changeSet:
+      id: 20200331-9-vno
+      author: vnorobio
+      changes:
+        - createTable:
+            tableName: clinic
+            columns:
+              - column:
+                  name: clinic_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: administrator
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: director
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: city
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: capacity
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: clinic_type
+                  type: int
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: clinic
+  - changeSet:
+      id: 20200331-10-vno
+      author: vnorobio
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: city
+            baseTableName: clinic
+            constraintName: fk_clinic_city
+            referencedColumnNames: city_id
+            referencedTableName: city
+  - changeSet:
+      id: 20200331-11-vno
+      author: vnorobio
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: clinic_type
+            baseTableName: clinic
+            constraintName: fk_clinic_type
+            referencedColumnNames: clinic_type_id
+            referencedTableName: clinic_type
+  - changeSet:
+      id: 20200331-12-vno
+      author: vnorobio
+      changes:
+        - createTable:
+            tableName: nephrologist
+            columns:
+              - column:
+                  name: nephro_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: nephro_type
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: active
+                  type: boolean
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: nephrologist
+  - changeSet:
+      id: 20200331-13-vno
+      author: vnorobio
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: nephro_type
+            baseTableName: nephrologist
+            constraintName: fk_nephro_type
+            referencedColumnNames: nephro_type_id
+            referencedTableName: nephrologist_type
+  - changeSet:
+      id: 20200401-14-vno
+      author: vnorobio
+      changes:
+        - createTable:
+            tableName: nephrologist_base_clinic
+            columns:
+              - column:
+                  name: base_clinic_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: nephrologist
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: clinic
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: salary
+                  type: decimal(24,6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dedication_hours
+                  type: decimal(12,2)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: nephrologist_base_clinic
+  - changeSet:
+      id: 20200401-15-vno
+      author: vnorobio
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: nephrologist
+            baseTableName: nephrologist_base_clinic
+            constraintName: fk_base_nephrologist
+            referencedColumnNames: nephro_id
+            referencedTableName: nephrologist
+  - changeSet:
+      id: 20200401-16-vno
+      author: vnorobio
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: clinic
+            baseTableName: nephrologist_base_clinic
+            constraintName: fk_base_clinic
+            referencedColumnNames: clinic_id
+            referencedTableName: clinic
+  - changeSet:
+      id: 20200401-17-vno
+      author: vnorobio
+      changes:
+        - createTable:
+            tableName: "user"
+            columns:
+              - column:
+                  name: user_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: login
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: "user"
